@@ -29,8 +29,11 @@ public class Player1 : MonoBehaviour
     {
         if (tag == "PlayerOne")
         {
-            horizontal = Input.GetAxisRaw("Horizontal");
-            rb.velocity = new Vector3(horizontal * moveSpeed, 0);
+
+            //I decided to change a few things so that resulted in having to make this be on the vertical axis and im just lazy to change it
+
+            horizontal = Input.GetAxisRaw("Vertical");
+            rb.velocity = new Vector3(-horizontal * moveSpeed, 0);
         }
     }
 }

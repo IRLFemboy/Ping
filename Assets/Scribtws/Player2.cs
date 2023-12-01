@@ -25,8 +25,8 @@ public class Player2 : MonoBehaviour
     {
         if (tag == "PlayerTwo")
         {
-            horizontal2 = Input.GetAxisRaw("Horizontal2");
-            rb2.velocity = new Vector3(horizontal2 * moveSpeed2, 0);
+            horizontal2 = Input.GetAxisRaw("Vertical2");
+            rb2.velocity = new Vector3(-horizontal2 * moveSpeed2, 0);
         }
     }
 }

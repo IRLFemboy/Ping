@@ -15,18 +15,21 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] goals;
     public GameObject ball;
-    GameObject ballGameObject;
+    [HideInInspector] public GameObject ballGameObject;
     public Transform ballSpawnPos;
 
 
     private void Awake()
     {
         instance = this;
+
+        
     }
     // Start is called before the first frame update
     void Start()
     {
         ballGameObject = Instantiate(ball, ballSpawnPos);
+        ballGameObject.name = "Ball";
     }
 
     // Update is called once per frame
