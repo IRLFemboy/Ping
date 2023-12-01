@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Pong
   - Ball
+  - PlayerOne
+  - PlayerTwo
+  - Goal
+  - Goal2
   layers:
   - Default
   - TransparentFX
