@@ -7,6 +7,8 @@ public class BallControl : MonoBehaviour
     public float speed = 20;
     Rigidbody rb;
 
+    public ParticleSystem blueGlowyStuff;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,5 +45,10 @@ public class BallControl : MonoBehaviour
             GameManager.instance.p2Score += 1;
             Destroy(gameObject);
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        ParticleSystem blueGlowyObject = Instantiate(blueGlowyStuff, transform.position, transform.rotation);
     }
 }
