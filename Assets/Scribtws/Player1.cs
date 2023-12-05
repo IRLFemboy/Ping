@@ -8,14 +8,23 @@ using UnityEngine.UIElements;
 
 public class Player1 : MonoBehaviour
 {
+    public static Player1 p1Instance;
 
+    [Header("Movement")]
     [Header("Player 1")]
     public Rigidbody rb;
     public float moveSpeed = 20;
     public float horizontal;
 
+    [Header("Powerup Related")]
+    public bool hasPowerUp;
+    public bool hasPressed = false;
+    public float distanceNeededToStopBall;
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        p1Instance = this;
+    }
     void Start()
     {
         if (tag == "PlayerOne")
@@ -34,6 +43,17 @@ public class Player1 : MonoBehaviour
 
             horizontal = Input.GetAxisRaw("Vertical");
             rb.velocity = new Vector3(-horizontal * moveSpeed, 0);
+        }
+
+        BallControl ball = GameObject.Find("Ball").GetComponent<BallControl>();
+        float distanceFromBall = Vector3.Distance(transform.position, ball.gameObject.transform.position);
+        Debug.Log(distanceFromBall);
+        if (distanceFromBall < distanceNeededToStopBall && hasPowerUp && !hasPressed && Input.GetButtonDown("Fire2"))
+        {
+            hasPressed = true;
+            rb.velocity = Vector3.zero;
+            ball.getRotationThing = true;
+            ball.playerHasDirectionPowerup = true;
         }
     }
 }

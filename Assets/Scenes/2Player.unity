@@ -4951,6 +4951,7 @@ MonoBehaviour:
   rb2: {fileID: 0}
   moveSpeed2: 20
   horizontal2: 0
+  hasPowerUp: 0
 --- !u!1 &1593281026
 GameObject:
   m_ObjectHideFlags: 0
@@ -4987,6 +4988,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   moveSpeed: 20
   horizontal: 0
+  hasPowerUp: 1
+  distanceNeededToStopBall: 5
 --- !u!65 &1593281028
 BoxCollider:
   m_ObjectHideFlags: 0

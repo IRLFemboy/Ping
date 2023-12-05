@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Player2 : MonoBehaviour
 {
+    public static Player2 p2Instance;
 
     [Header("Player 2")]
     public Rigidbody rb2;
     public float moveSpeed2 = 20;
     public float horizontal2;
 
+    [HideInInspector] public bool hasPowerUp;
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        p2Instance = this;
+    }
     void Start()
     {
         if (tag == "PlayerTwo")
