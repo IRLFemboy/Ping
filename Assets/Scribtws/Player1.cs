@@ -51,7 +51,7 @@ public class Player1 : MonoBehaviour
         if (distanceFromBall < distanceNeededToStopBall && hasPowerUp && !hasPressed && Input.GetButtonDown("Fire2"))
         {
             hasPressed = true;
-            rb.velocity = Vector3.zero;
+            ball.rb.velocity = Vector3.zero;
             ball.getRotationThing = true;
             ball.playerHasDirectionPowerup = true;
         }
