@@ -19,7 +19,8 @@ public class BallControl : MonoBehaviour
     float minAngle = -45, maxAngle = 45;
     Quaternion targetRotation;
     Vector3 rotationAxis = Vector3.zero;
-    float launchForce;
+    float launchForce = 40;
+    public bool getRotationThing;
 
     public bool playerHasDirectionPowerup;
 
@@ -27,9 +28,10 @@ public class BallControl : MonoBehaviour
     public float speed = 20;
     [HideInInspector] public Rigidbody rb;
 
+    [Header("Extra")]
     public ParticleSystem blueGlowyStuff;
-
-    public bool getRotationThing;
+    public GameObject arrow;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -69,12 +71,13 @@ public class BallControl : MonoBehaviour
 
             if (Input.GetButtonDown("Fire1"))
             {
-                launchForce = speed;
-                rb.AddRelativeForce(Vector3.forward * launchForce, ForceMode.Impulse);
+                launchForce = speed + 10;
+                StartCoroutine(AddLotsOfForceThenSlowDown());
                 Player1.p1Instance.hasPowerUp = false;
                 Player1.p1Instance.hasPressed = false;
                 Player2.p2Instance.hasPowerUp = false;
                 playerHasDirectionPowerup = false;
+                arrow.SetActive(false);
             }
 
         }
@@ -128,5 +131,13 @@ public class BallControl : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ParticleSystem blueGlowyObject = Instantiate(blueGlowyStuff, transform.position, transform.rotation);
+    }
+
+    IEnumerator AddLotsOfForceThenSlowDown()
+    {
+        float forceToLose = 10;
+        rb.AddRelativeForce(Vector3.forward * launchForce, ForceMode.VelocityChange);
+        yield return new WaitForSeconds(3);
+        rb.AddRelativeForce(Vector3.forward * -forceToLose, ForceMode.VelocityChange);
     }
 }

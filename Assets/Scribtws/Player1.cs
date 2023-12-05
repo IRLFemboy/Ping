@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Slider = UnityEngine.UI.Slider;
 
 public class Player1 : MonoBehaviour
 {
@@ -17,9 +18,14 @@ public class Player1 : MonoBehaviour
     public float horizontal;
 
     [Header("Powerup Related")]
-    public bool hasPowerUp;
+    public bool hasPowerUp = false;
     public bool hasPressed = false;
     public float distanceNeededToStopBall;
+
+    public int powerMeter = 0;
+    public int powerMeterMax;
+    public PowerBar powerBar;
+
 
     private void Awake()
     {
@@ -31,6 +37,9 @@ public class Player1 : MonoBehaviour
         {
             rb = GetComponent<Rigidbody>();
         }
+
+        powerMeter = 0;
+        powerBar.setPowerMax(powerMeterMax);
     }
 
     // Update is called once per frame
@@ -45,15 +54,37 @@ public class Player1 : MonoBehaviour
             rb.velocity = new Vector3(-horizontal * moveSpeed, 0);
         }
 
-        BallControl ball = GameObject.Find("Ball").GetComponent<BallControl>();
+        if(powerMeter == powerMeterMax)
+        {
+            hasPowerUp = true;
+        }
+
+        GameObject ball = GameManager.instance.ballGameObject;
+        BallControl ballControl = ball.GetComponent<BallControl>();
         float distanceFromBall = Vector3.Distance(transform.position, ball.gameObject.transform.position);
-        Debug.Log(distanceFromBall);
         if (distanceFromBall < distanceNeededToStopBall && hasPowerUp && !hasPressed && Input.GetButtonDown("Fire2"))
         {
             hasPressed = true;
-            ball.rb.velocity = Vector3.zero;
-            ball.getRotationThing = true;
-            ball.playerHasDirectionPowerup = true;
+            powerMeter = 0;
+            powerBar.setPower(powerMeter);
+            ballControl.rb.velocity = Vector3.zero;
+            ballControl.getRotationThing = true;
+            ballControl.playerHasDirectionPowerup = true;
+            ballControl.arrow.SetActive(true);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Ball"))
+        {
+            powerMeter += 10;
+            powerBar.setPower(powerMeter);
+
+            if(powerMeter > powerMeterMax)
+            {
+                powerMeter = powerMeterMax;
+            }
         }
     }
 }
