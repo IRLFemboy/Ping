@@ -45,40 +45,66 @@ public class BallControl : MonoBehaviour
     {
         if (playerHasDirectionPowerup)
         {
-            if (getRotationThing)
+            if(Player1.p1Instance.hasPressed)
             {
-                if (Player1.p1Instance.hasPowerUp)
+                if (getRotationThing)
                 {
-                    transform.localEulerAngles = Vector3.zero;
-                }
-                else if (Player2.p2Instance.hasPowerUp)
-                {
-                    transform.localEulerAngles = new Vector3(0, 180, 0);
+                    getRotationThing = false;
+                    targetRotation = transform.rotation;
+                    Debug.Log(targetRotation);
                 }
 
-                getRotationThing = false;
-                targetRotation = transform.rotation;
-                Debug.Log(targetRotation);
+                var input = Input.GetAxis("Horizontal") * sensitivity;
+
+                rotationAxis[(int)axis] = input;
+                targetRotation *= Quaternion.Euler(rotationAxis);
+                targetRotation = ClampAngleOnAxis(targetRotation, (int)axis, minAngle, maxAngle);
+
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    launchForce = speed + 10;
+                    StartCoroutine(AddLotsOfForceThenSlowDown());
+                    Player1.p1Instance.hasPowerUp = false;
+                    Player1.p1Instance.hasPressed = false;
+                    playerHasDirectionPowerup = false;
+                    arrow.SetActive(false);
+                }
             }
 
-            var input = Input.GetAxis("Horizontal") * sensitivity;
-
-            rotationAxis[(int)axis] = input;
-            targetRotation *= Quaternion.Euler(rotationAxis);
-            targetRotation = ClampAngleOnAxis(targetRotation, (int)axis, minAngle, maxAngle);
-
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
-
-            if (Input.GetButtonDown("Fire1"))
+            else if (Player2.p2Instance.hasPressed)
             {
-                launchForce = speed + 10;
-                StartCoroutine(AddLotsOfForceThenSlowDown());
-                Player1.p1Instance.hasPowerUp = false;
-                Player1.p1Instance.hasPressed = false;
-                Player2.p2Instance.hasPowerUp = false;
-                playerHasDirectionPowerup = false;
-                arrow.SetActive(false);
+                if (getRotationThing)
+                {
+                    getRotationThing = false;
+                    targetRotation = transform.rotation;
+                    Debug.Log(targetRotation);
+                }
+
+                var input = Input.GetAxis("Horizontal2") * sensitivity;
+
+                rotationAxis[(int)axis] = input;
+                targetRotation *= Quaternion.Euler(rotationAxis);
+
+                float minAngle2 = 180 - minAngle;
+                float maxAngle2 = 180 - maxAngle;
+
+                targetRotation = ClampAngleOnAxis(targetRotation, (int)axis, minAngle2, maxAngle2);
+
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+
+                if (Input.GetButtonDown("Fire1p2"))
+                {
+                    launchForce = speed + 10;
+                    StartCoroutine(AddLotsOfForceThenSlowDown());
+                    Player2.p2Instance.hasPowerUp = false;
+                    Player2.p2Instance.hasPressed = false;
+                    playerHasDirectionPowerup = false;
+                    arrow.SetActive(false);
+                }
             }
+            
 
         }
 
@@ -92,11 +118,14 @@ public class BallControl : MonoBehaviour
 
         var angle = 2f * Mathf.Rad2Deg * Mathf.Atan(q[axis]);
 
-        angle = Mathf.Clamp(angle, minAngle, maxAngle);
+
+        angle = Mathf.Clamp(angle, _minAngle, _maxAngle);
         q[axis] = Mathf.Tan(.5f * Mathf.Deg2Rad * angle);
 
         return q;
     }
+
+
 
     void Launch()
     {

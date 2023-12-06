@@ -12,10 +12,9 @@ public class Player1 : MonoBehaviour
     public static Player1 p1Instance;
 
     [Header("Movement")]
-    [Header("Player 1")]
     public Rigidbody rb;
     public float moveSpeed = 20;
-    public float horizontal;
+    public float vertical;
 
     [Header("Powerup Related")]
     public bool hasPowerUp = false;
@@ -47,11 +46,8 @@ public class Player1 : MonoBehaviour
     {
         if (tag == "PlayerOne")
         {
-
-            //I decided to change a few things so that resulted in having to make this be on the vertical axis and im just lazy to change it
-
-            horizontal = Input.GetAxisRaw("Vertical");
-            rb.velocity = new Vector3(-horizontal * moveSpeed, 0);
+            vertical = Input.GetAxisRaw("Vertical");
+            rb.velocity = new Vector3(-vertical * moveSpeed, 0);
         }
 
         if(powerMeter == powerMeterMax)
@@ -67,6 +63,7 @@ public class Player1 : MonoBehaviour
             hasPressed = true;
             powerMeter = 0;
             powerBar.setPower(powerMeter);
+            ball.transform.localEulerAngles = Vector3.zero;
             ballControl.rb.velocity = Vector3.zero;
             ballControl.getRotationThing = true;
             ballControl.playerHasDirectionPowerup = true;
