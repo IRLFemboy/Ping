@@ -58,7 +58,7 @@ public class BallControl : MonoBehaviour
 
                 rotationAxis[(int)axis] = input;
                 targetRotation *= Quaternion.Euler(rotationAxis);
-                targetRotation = ClampAngleOnAxis(targetRotation, (int)axis, minAngle, maxAngle);
+                targetRotation = ClampAngleOnAxis(targetRotation, (int)axis, -45, 45);
 
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
 
@@ -87,10 +87,7 @@ public class BallControl : MonoBehaviour
                 rotationAxis[(int)axis] = input;
                 targetRotation *= Quaternion.Euler(rotationAxis);
 
-                float minAngle2 = 180 - minAngle;
-                float maxAngle2 = 180 - maxAngle;
-
-                targetRotation = ClampAngleOnAxis(targetRotation, (int)axis, minAngle2, maxAngle2);
+                targetRotation = ClampAngleOnAxis(targetRotation, (int)axis, 135, 225);
 
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
 
@@ -111,18 +108,32 @@ public class BallControl : MonoBehaviour
     }
     Quaternion ClampAngleOnAxis(Quaternion q, int axis, float _minAngle, float _maxAngle)
     {
-        q.x /= q.w;
-        q.y /= q.w;
-        q.z /= q.w;
-        q.w = 1.0f;
+        if (Player1.p1Instance.hasPressed)
+        {
+            q.x /= q.w;
+            q.y /= q.w;
+            q.z /= q.w;
+            q.w = 1.0f;
 
-        var angle = 2f * Mathf.Rad2Deg * Mathf.Atan(q[axis]);
+            var angle = 2f * Mathf.Rad2Deg * Mathf.Atan(q[axis]);
 
 
-        angle = Mathf.Clamp(angle, _minAngle, _maxAngle);
-        q[axis] = Mathf.Tan(.5f * Mathf.Deg2Rad * angle);
+            angle = Mathf.Clamp(angle, _minAngle, _maxAngle);
+            q[axis] = Mathf.Tan(.5f * Mathf.Deg2Rad * angle);
 
-        return q;
+            return q;
+        }
+        else if (Player2.p2Instance.hasPressed)
+        {
+            Vector3 euler = q.eulerAngles;
+            euler[axis] = Mathf.Clamp(euler[axis], _minAngle, _maxAngle);
+            return Quaternion.Euler(euler);
+        }
+        else
+        {
+            return q;
+        }
+        
     }
 
 

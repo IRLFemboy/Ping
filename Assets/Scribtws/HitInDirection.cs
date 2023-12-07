@@ -15,12 +15,14 @@ public class HitInDirection : MonoBehaviour
     public float sensitivity = 1;
     Axis axis = Axis.y;
     public float rotateSpeed = 5f;
-    float minAngle = -45, maxAngle = 45;
+    public float minAngle = -45, maxAngle = 45;
     Quaternion targetRotation;
     Vector3 rotationAxis = Vector3.zero;
 
     Rigidbody rb;
     public float launchForce;
+
+    public bool is135;
 
     // Start is called before the first frame update
     void Start()
@@ -41,26 +43,41 @@ public class HitInDirection : MonoBehaviour
 
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
 
-        if (Input.GetButtonDown("Fire1"))
+        /*if (Input.GetButtonDown("Fire1"))
         {
             rb.AddRelativeForce(Vector3.forward * launchForce, ForceMode.VelocityChange);
-        }
+        }*/
 
     }
 
     Quaternion ClampAngleOnAxis(Quaternion q, int axis, float _minAngle, float _maxAngle)
     {
-        q.x /= q.w;
-        q.y /= q.w;
-        q.z /= q.w;
-        q.w = 1.0f;
+        if (!is135)
+        {
+            q.x /= q.w;
+            q.y /= q.w;
+            q.z /= q.w;
+            q.w = 1.0f;
 
-        var angle = 2f * Mathf.Rad2Deg * Mathf.Atan(q[axis]);
+            var angle = 2f * Mathf.Rad2Deg * Mathf.Atan(q[axis]);
 
-        angle = Mathf.Clamp(angle, minAngle, maxAngle);
-        q[axis] = Mathf.Tan(.5f * Mathf.Deg2Rad * angle);
+            angle = Mathf.Clamp(angle, _minAngle, _maxAngle);
+            q[axis] = Mathf.Tan(.5f * Mathf.Deg2Rad * angle);
 
-        return q;
+            return q;
+        }
+        else
+        {
+            // Convert quaternion to euler angles
+            Vector3 euler = q.eulerAngles;
+
+            // Clamp the angle on the specified axis
+            euler[axis] = Mathf.Clamp(euler[axis], _minAngle, _maxAngle);
+
+            // Convert euler angles back to quaternion
+            return Quaternion.Euler(euler);
+        }
+        
     }
 
     private void FixedUpdate()
