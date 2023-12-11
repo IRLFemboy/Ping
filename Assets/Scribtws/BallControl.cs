@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BallControl : MonoBehaviour
@@ -16,7 +17,6 @@ public class BallControl : MonoBehaviour
     public float sensitivity = 1;
     Axis axis = Axis.y;
     public float rotateSpeed = 5f;
-    float minAngle = -45, maxAngle = 45;
     Quaternion targetRotation;
     Vector3 rotationAxis = Vector3.zero;
     float launchForce = 40;
@@ -29,8 +29,10 @@ public class BallControl : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
 
     [Header("Extra")]
-    public ParticleSystem blueGlowyStuff;
+    public ParticleSystem redGlowyStuff;
+    public ParticleSystem redSpinnyStuff;
     public GameObject arrow;
+
     
 
     // Start is called before the first frame update
@@ -64,8 +66,8 @@ public class BallControl : MonoBehaviour
 
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    launchForce = speed + 10;
-                    StartCoroutine(AddLotsOfForceThenSlowDown());
+                    launchForce = speed + 30;
+                    AddLotsOfForceThenSlowDown();
                     Player1.p1Instance.hasPowerUp = false;
                     Player1.p1Instance.hasPressed = false;
                     playerHasDirectionPowerup = false;
@@ -93,8 +95,8 @@ public class BallControl : MonoBehaviour
 
                 if (Input.GetButtonDown("Fire1p2"))
                 {
-                    launchForce = speed + 10;
-                    StartCoroutine(AddLotsOfForceThenSlowDown());
+                    launchForce = speed + 30;
+                    AddLotsOfForceThenSlowDown();
                     Player2.p2Instance.hasPowerUp = false;
                     Player2.p2Instance.hasPressed = false;
                     playerHasDirectionPowerup = false;
@@ -133,7 +135,6 @@ public class BallControl : MonoBehaviour
         {
             return q;
         }
-        
     }
 
 
@@ -159,25 +160,27 @@ public class BallControl : MonoBehaviour
         if (other.gameObject == GameManager.instance.goals[1])
         {
             GameManager.instance.p1Score += 1;
+            GameManager.instance.goal2Particles.Play();
             Destroy(gameObject);
         }
         else if (other.gameObject == GameManager.instance.goals[0])
         {
             GameManager.instance.p2Score += 1;
+            GameManager.instance.goal1Particles.Play();
             Destroy(gameObject);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        ParticleSystem blueGlowyObject = Instantiate(blueGlowyStuff, transform.position, transform.rotation);
+        ParticleSystem redGlowyObject = Instantiate(redGlowyStuff, transform.position, transform.rotation);
     }
 
-    IEnumerator AddLotsOfForceThenSlowDown()
+    public void AddLotsOfForceThenSlowDown()
     {
-        float forceToLose = 10;
+        rb.isKinematic = false;
         rb.AddRelativeForce(Vector3.forward * launchForce, ForceMode.VelocityChange);
-        yield return new WaitForSeconds(3);
-        rb.AddRelativeForce(Vector3.forward * -forceToLose, ForceMode.VelocityChange);
     }
+
+    
 }

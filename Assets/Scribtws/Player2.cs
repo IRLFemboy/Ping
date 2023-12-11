@@ -58,9 +58,11 @@ public class Player2 : MonoBehaviour
             powerBar.setPower(powerMeter);
             ball.transform.localEulerAngles = new Vector3(0, 180, 0);
             ballControl.rb.velocity = Vector3.zero;
+            ballControl.rb.isKinematic = true;
             ballControl.getRotationThing = true;
             ballControl.playerHasDirectionPowerup = true;
             ballControl.arrow.SetActive(true);
+            ParticleSystem redGlowySpinnyObject = Instantiate(ballControl.redSpinnyStuff, ball.transform.position, ballControl.redSpinnyStuff.transform.rotation);
         }
     }
 

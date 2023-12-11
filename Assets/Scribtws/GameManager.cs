@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public GameObject ballGameObject;
     public Transform ballSpawnPos;
 
+    public ParticleSystem goal1Particles;
+    public ParticleSystem goal2Particles;
 
     private void Awake()
     {
@@ -40,7 +42,15 @@ public class GameManager : MonoBehaviour
 
         if (ballGameObject == null)
         {
+            StartCoroutine(SlowTime());
             ballGameObject = Instantiate(ball, ballSpawnPos);
         }
+    }
+
+    public IEnumerator SlowTime()
+    {
+        Time.timeScale = .3f;
+        yield return new WaitForSecondsRealtime(1.5f);
+        Time.timeScale = 1;
     }
 }

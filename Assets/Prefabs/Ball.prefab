@@ -135,7 +135,9 @@ MonoBehaviour:
   playerHasDirectionPowerup: 0
   speed: 30
   rb: {fileID: 0}
-  blueGlowyStuff: {fileID: 7736988404874270653, guid: f5fe8e74c0945b847a810abb2e9c1c3e,
+  redGlowyStuff: {fileID: 7736988404874270653, guid: f5fe8e74c0945b847a810abb2e9c1c3e,
+    type: 3}
+  redSpinnyStuff: {fileID: 692196394237307686, guid: 42e530b37433e594f860432dbe43e3f2,
     type: 3}
   arrow: {fileID: 4463790002391857564}
 --- !u!96 &6438339925380976124
