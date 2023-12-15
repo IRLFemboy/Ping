@@ -34,10 +34,10 @@ public class TitleButtons : MonoBehaviour
         if (Mathf.Abs(vertical) > .1f && canMove)
         {
             canMove = false;
+
             buttons[currentButton].color = Color.grey;
             int button = vertical > 0 ? currentButton-- : currentButton++;
-            beanut.transform.localPosition = buttons[currentButton].gameObject.transform.localPosition + new Vector3(450, 0, 0);
-
+            
             if (currentButton > buttonCount)
             {
                 currentButton = buttonCount;
@@ -46,6 +46,8 @@ public class TitleButtons : MonoBehaviour
             {
                 currentButton = 0;
             }
+
+            beanut.transform.localPosition = buttons[currentButton].gameObject.transform.localPosition + new Vector3(450, 0, 0);
             buttons[currentButton].color = Color.white;
         }
         else if (vertical == 0)

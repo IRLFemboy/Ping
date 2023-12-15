@@ -62,6 +62,7 @@ public class Player2 : MonoBehaviour
             ballControl.getRotationThing = true;
             ballControl.playerHasDirectionPowerup = true;
             ballControl.arrow.SetActive(true);
+            GameManager.instance.audioSource.PlayOneShot(GameManager.instance.vineBoom);
             ParticleSystem redGlowySpinnyObject = Instantiate(ballControl.redSpinnyStuff, ball.transform.position, ballControl.redSpinnyStuff.transform.rotation);
         }
     }

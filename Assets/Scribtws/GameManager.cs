@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,17 @@ public class GameManager : MonoBehaviour
 
     public ParticleSystem goal1Particles;
     public ParticleSystem goal2Particles;
+
+    [Header("Sounds")]
+    public AudioSource audioSource;
+
+    public AudioClip[] possibleGoalSounds;
+
+    public AudioClip vineBoom;
+    public AudioClip shootSound;
+
+
+    public AudioClip hitSound;
 
     private void Awake()
     {
@@ -43,6 +55,11 @@ public class GameManager : MonoBehaviour
             StartCoroutine(SlowTime());
             ballGameObject = Instantiate(ball, ballSpawnPos);
         }
+
+        if (Input.GetButtonDown("Exit"))
+        {
+            SceneManager.LoadScene("Title");
+        }
     }
 
     public IEnumerator SlowTime()
@@ -51,4 +68,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(1.5f);
         Time.timeScale = 1;
     }
+
+
 }

@@ -53,7 +53,6 @@ public class BallControl : MonoBehaviour
                 {
                     getRotationThing = false;
                     targetRotation = transform.rotation;
-                    Debug.Log(targetRotation);
                 }
 
                 var input = Input.GetAxis("Horizontal") * sensitivity;
@@ -66,11 +65,12 @@ public class BallControl : MonoBehaviour
 
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    launchForce = speed + 30;
+                    launchForce = speed + 10;
                     AddLotsOfForceThenSlowDown();
                     Player1.p1Instance.hasPowerUp = false;
                     Player1.p1Instance.hasPressed = false;
                     playerHasDirectionPowerup = false;
+                    GameManager.instance.audioSource.PlayOneShot(GameManager.instance.shootSound);
                     arrow.SetActive(false);
                 }
             }
@@ -81,7 +81,6 @@ public class BallControl : MonoBehaviour
                 {
                     getRotationThing = false;
                     targetRotation = transform.rotation;
-                    Debug.Log(targetRotation);
                 }
 
                 var input = Input.GetAxis("Horizontal2") * sensitivity;
@@ -95,11 +94,12 @@ public class BallControl : MonoBehaviour
 
                 if (Input.GetButtonDown("Fire1p2"))
                 {
-                    launchForce = speed + 30;
+                    launchForce = speed + 10;
                     AddLotsOfForceThenSlowDown();
                     Player2.p2Instance.hasPowerUp = false;
                     Player2.p2Instance.hasPressed = false;
                     playerHasDirectionPowerup = false;
+                    GameManager.instance.audioSource.PlayOneShot(GameManager.instance.shootSound);
                     arrow.SetActive(false);
                 }
             }
@@ -160,12 +160,16 @@ public class BallControl : MonoBehaviour
         if (other.gameObject == GameManager.instance.goals[1])
         {
             GameManager.instance.p1Score += 1;
+            GameManager.instance.audioSource.PlayOneShot(GameManager.instance.possibleGoalSounds[Random.Range(0, GameManager.instance.possibleGoalSounds.Length)]);
+            Debug.Log("Played Sound");
             GameManager.instance.goal2Particles.Play();
             Destroy(gameObject);
         }
         else if (other.gameObject == GameManager.instance.goals[0])
         {
             GameManager.instance.p2Score += 1;
+            GameManager.instance.audioSource.PlayOneShot(GameManager.instance.possibleGoalSounds[Random.Range(0, GameManager.instance.possibleGoalSounds.Length)]);
+            Debug.Log("Played Sound");
             GameManager.instance.goal1Particles.Play();
             Destroy(gameObject);
         }
@@ -174,6 +178,11 @@ public class BallControl : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ParticleSystem redGlowyObject = Instantiate(redGlowyStuff, transform.position, transform.rotation);
+        
+        if (collision.gameObject.CompareTag("Paddle"))
+        {
+            GameManager.instance.audioSource.PlayOneShot(GameManager.instance.hitSound);
+        }
     }
 
     public void AddLotsOfForceThenSlowDown()
