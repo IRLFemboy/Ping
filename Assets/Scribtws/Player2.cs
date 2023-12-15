@@ -49,6 +49,7 @@ public class Player2 : MonoBehaviour
         }
 
         GameObject ball = GameManager.instance.ballGameObject;
+
         BallControl ballControl = ball.GetComponent<BallControl>();
         float distanceFromBall = Vector3.Distance(transform.position, ball.gameObject.transform.position);
         if (distanceFromBall < distanceNeededToStopBall && hasPowerUp && !hasPressed && Input.GetButtonDown("Fire2p2"))

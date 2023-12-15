@@ -54,7 +54,7 @@ public class Player1 : MonoBehaviour
         {
             hasPowerUp = true;
         }
-
+        
         GameObject ball = GameManager.instance.ballGameObject;
         BallControl ballControl = ball.GetComponent<BallControl>();
         float distanceFromBall = Vector3.Distance(transform.position, ball.gameObject.transform.position);

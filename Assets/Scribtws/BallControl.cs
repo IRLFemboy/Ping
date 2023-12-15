@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BallControl : MonoBehaviour
 {
@@ -33,7 +35,7 @@ public class BallControl : MonoBehaviour
     public ParticleSystem redSpinnyStuff;
     public GameObject arrow;
 
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +49,7 @@ public class BallControl : MonoBehaviour
     {
         if (playerHasDirectionPowerup)
         {
-            if(Player1.p1Instance.hasPressed)
+            if (Player1.p1Instance.hasPressed)
             {
                 if (getRotationThing)
                 {
@@ -103,7 +105,7 @@ public class BallControl : MonoBehaviour
                     arrow.SetActive(false);
                 }
             }
-            
+
 
         }
 
@@ -178,8 +180,8 @@ public class BallControl : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         ParticleSystem redGlowyObject = Instantiate(redGlowyStuff, transform.position, transform.rotation);
-        
-        if (collision.gameObject.CompareTag("Paddle"))
+
+        if (collision.gameObject.CompareTag("PlayerOne") || collision.gameObject.CompareTag("PlayerTwo"))
         {
             GameManager.instance.audioSource.PlayOneShot(GameManager.instance.hitSound);
         }

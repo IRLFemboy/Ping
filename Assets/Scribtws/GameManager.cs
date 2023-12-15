@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(SlowTime());
             ballGameObject = Instantiate(ball, ballSpawnPos);
+            Debug.Log(ballGameObject.name);
         }
 
         if (Input.GetButtonDown("Exit"))
